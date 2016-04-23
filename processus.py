@@ -6,7 +6,7 @@ import random
 
 # ----- Fonctions : -----
 
-def Effacer() :
+def effacer() :
     """fonction qui permet l'arrêt du tracé de la courbe et efface le tracé"""
 
     global arret
@@ -21,7 +21,19 @@ def Apropos() :
     showinfo("A propos",
              "Le projet est une simulation autour de la finance")
 
+def personnaliser() :
+    """ouverture d'une interface permettant de changer beaucoup de paramètres"""
+    fen4 = Tk()
 
+    fen4.mainloop()
+    
+
+def maj_periode(nouvelle_periode) :
+    """fonction exécutée à chaque changement de position du curseur"""
+    global T
+    T = int(nouvelle_periode)
+
+    
 def acheter() :
     """création d'une nouvelle interface pour l'achat d'actions"""
 
@@ -76,6 +88,25 @@ def confirmer_vente() :
 
     showinfo("Confirmation de la vente",
              "Les actions ont bien été mises en vente")
+    
+
+def modifier_periode() :
+    """affichage d'une fenêtre avec un curseur pour modifier la période"""
+
+    fen3 = Tk()
+    fen3.title("Modification de la période")
+
+    # création d'un nouveau widget de type scale
+    echelle = Scale(fen3, from_ = 1, to = 10, resolution = 1,
+                    orient = HORIZONTAL, length = 250, tickinterval = 1,
+                    showvalue = 0, label = 'Nouvelle période :',
+                    command = maj_periode)
+                    
+    bouton = Button(fen3, text = 'Valider', command = fen3.destroy)
+    echelle.grid(row = 1, padx = 10, pady = 10)
+    bouton.grid(row = 2, padx = 10, pady = 10)
+
+    fen3.mainloop()
   
 
 def tracer_segments() :
@@ -155,10 +186,6 @@ def demarrer() :
 
 # ----- Procédure : -----
 
-
-
-
-
 # on demande à l'utilisateur la période qu'il souhaite entre chaque nouvelle
 # valeur de l'action :
 T = int(input("Période souhaitée (en s) : "))
@@ -187,9 +214,14 @@ barre_menu = Menu(fenetre)
 
 # Mise en place des différentes fonctionnalités de ce menu :
 menufichier = Menu(barre_menu, tearoff = 0)
-menufichier.add_command(label = 'Effacer tout', command = Effacer)
+menufichier.add_command(label = 'Effacer tout', command = effacer)
 menufichier.add_command(label = 'Quitter', command = fenetre.destroy)
 barre_menu.add_cascade(label = 'Fichier', menu = menufichier)
+
+menuoptions = Menu(barre_menu, tearoff = 0)
+menuoptions.add_command(label = 'Modifier période', command = modifier_periode)
+menuoptions.add_command(label = 'Personnaliser', command = personnaliser)
+barre_menu.add_cascade(label = 'Options', menu = menuoptions)
 
 menuaide = Menu(barre_menu, tearoff = 0)
 menuaide.add_command(label = 'A propos', command = Apropos)
