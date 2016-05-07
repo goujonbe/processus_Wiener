@@ -1,6 +1,9 @@
 
+# --*-- coding : utf-8 --*--
+
 from tkinter import *
 from tkinter.messagebox import showinfo
+import fonctions
 import random
 
 
@@ -13,6 +16,7 @@ def effacer() :
     arret = True
 
     canevas.delete(ALL)
+    barre_notifs.delete(ALL)
 
     
 def Apropos() :
@@ -131,6 +135,9 @@ def tracer_segments() :
     
     pt = (x_1, y_1) # mise à jour du point d'arrivée d'où on repartira
 
+    # envoi à la fonction permettant le stockage de toutes les valeurs
+    fonctions.stocker(pt)
+
 
     # utilisation de la méthode after() appliquée à l'objet fenetre.
     # Elle permet d'exécuter une action après un temps donné en ms.
@@ -177,26 +184,73 @@ def demarrer() :
     global pt
 
     # on définit les coordonnées de l'ordonnée à l'origine sous forme de tuple :
-    pt = (10, 200)
+    pt = [10, 200]
     
     arret = False
     tracer_axes(T)
     fenetre.after(3000, tracer_segments)
+    afficher_notifications()
+
+
+def importer_texte() :
+    """Cette fonction retourne au hasard une des phrases située
+    dans un fichier texte"""
+
+    global possibilites
+
+    if possibilites == [] :
+        with open('notifications.txt') as fichier :
+            possibilites = fichier.readlines()
+            choix = [i for i in range(len(possibilites))]
+            indice = random.choice(choix)
+            phrase = possibilites[indice]
+            phrase = phrase[:-1] # permet d'éliminer les '\n'
+            del possibilites[indice]
+    else :
+        choix = [i for i in range(len(possibilites))]
+        indice = random.choice(choix)
+        phrase = possibilites[indice]
+        phrase = phrase[:-1]  # permet d'éliminer les '\n'
+        del possibilites[indice]
+
+    return phrase
+
+
+def afficher_notifications() :
+    """fonction permettant l'affichage d'une notification dans le fil
+    d'actualité"""
+
+    global y
+
+    barre_notifs.create_text(5, y, text = importer_texte(), anchor = W)
+    y = y + 20
+    if y < 500 :
+        barre_notifs.after(4000, afficher_notifications)
 
 
 # ----- Procédure : -----
 
-# on demande à l'utilisateur la période qu'il souhaite entre chaque nouvelle
-# valeur de l'action :
-T = int(input("Période souhaitée (en s) : "))
+y = 10
+possibilites = []
+T = 2
 
 fenetre = Tk()
 fenetre.title("Logiciel de simulation des marchés financiers")
 
 # initialisation de l'objet canevas à partir de la classe Canvas() :
+titre1 = Canvas(fenetre, width = 1000, height = 50, bg = 'dark blue')
 canevas = Canvas(fenetre, width = 1000, height = 400, bg = 'black')
+titre2 = Canvas(fenetre, width = 300, height = 50, bg = 'blue')
+barre_notifs = Canvas(fenetre, width=300, height=500, bg='White')
+
+titre1.create_text(500, 25, text = 'Ecran de contrôle', fill = 'white')
+titre2.create_text(150, 25, text = 'Flux d\'actualité', fill = 'white')
+
 # affichage :
-canevas.grid(row = 1, column = 1, rowspan = 4, padx = 10, pady = 10)
+titre1.grid(row = 1, column = 1, columnspan = 4, padx = 10, pady = 10)
+canevas.grid(row = 2, column = 1, columnspan = 4, padx = 10, pady = 10)
+titre2.grid(row = 1, column = 5, padx = 10, pady = 10)
+barre_notifs.grid(row = 2, column = 5, rowspan = 2, padx = 10, pady = 10)
 
 # initialisation d'objets de classe Button() :
 bouton1 = Button(fenetre, text = 'Démarrer', command = demarrer)
@@ -204,10 +258,10 @@ bouton2 = Button(fenetre, text = 'Quitter', command = fenetre.destroy)
 bouton3 = Button(fenetre, text = 'Acheter des actions', command = acheter)
 bouton4 = Button(fenetre, text = 'Vendre des actions', command = vendre)
 # affichage :
-bouton1.grid(row = 1, column = 2, padx = 10, pady = 10)
-bouton2.grid(row = 4, column = 2, padx = 10, pady = 10)
-bouton3.grid(row = 2, column = 2, padx = 10, pady = 10)
-bouton4.grid(row = 3, column = 2, padx = 10, pady = 10)
+bouton1.grid(row = 3, column = 1, padx = 10, pady = 10)
+bouton2.grid(row = 3, column = 2, padx = 10, pady = 10)
+bouton3.grid(row = 3, column = 3, padx = 10, pady = 10)
+bouton4.grid(row = 3, column = 4, padx = 10, pady = 10)
 
 # Création d'un menu :
 barre_menu = Menu(fenetre)
