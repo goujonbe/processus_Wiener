@@ -13,10 +13,12 @@ def effacer() :
     """fonction qui permet l'arrêt du tracé de la courbe et efface le tracé"""
 
     global arret
+    global y
     arret = True
 
     canevas.delete(ALL)
     barre_notifs.delete(ALL)
+    y = 10
 
     
 def Apropos() :
@@ -228,11 +230,59 @@ def afficher_notifications() :
         barre_notifs.after(4000, afficher_notifications)
 
 
+def accueillir():
+
+    global T
+    global variance
+    global ecart_type
+
+    accueil = Tk()
+    accueil.title("Accueil")
+
+    espace = 50
+
+    canevas = Canvas(width = 100, height = 50, bg = 'orange')
+    canevas.grid(row = 1, column = 1, columnspan = 2, padx = espace, pady = espace)
+
+    text0 = Label(text='Période')
+    text1 = IntVar()
+    text1.set("Période entre 1 et 10")
+    entr1 = Entry(accueil, text = text1)
+
+
+    text2 = Label(text='Variance')
+    text3 = IntVar()
+    text3.set("gjef")
+    entr2 = Entry(accueil, text = text3)
+
+    text4 = Label(text='Variance')
+    text5 = IntVar()
+    text5.set("gjef")
+    entr3 = Entry(accueil, text = text5)
+
+    text0.grid(row = 2, column = 1, padx = espace, pady = espace)
+    entr1.grid(row = 2, column = 2, padx = espace, pady = espace)
+    text2.grid(row = 3, column = 1, padx = espace, pady = espace)
+    entr2.grid(row = 3, column = 2, padx = espace, pady = espace)
+    text4.grid(row = 4, column = 1, padx = espace, pady = espace)
+    entr3.grid(row = 4, column = 2, padx = espace, pady = espace)
+
+    valider = Button(accueil, text = 'valider', command = accueil.destroy)
+    valider. grid(row = 5, column = 2, padx = espace, pady = espace)
+    accueil.mainloop()
+
+    T = text1.get()
+    variance = text3.get()
+    ecart_type = text5.get()
+
 # ----- Procédure : -----
 
 y = 10
 possibilites = []
 T = 2
+
+
+accueillir()
 
 fenetre = Tk()
 fenetre.title("Logiciel de simulation des marchés financiers")
@@ -284,6 +334,6 @@ barre_menu.add_cascade(label = 'Aide', menu = menuaide)
 # affichage :
 fenetre.config(menu = barre_menu)
 
-
 # démarrage du réceptionnaire d'évènements associé à la fen1être
 fenetre.mainloop()
+
