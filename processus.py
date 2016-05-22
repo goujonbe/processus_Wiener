@@ -121,16 +121,23 @@ def tracer_segments() :
     global pt
     global T
     global arret
+    global variance
+    global esperance
+    global independance
 
     # condition qui permet l'arrêt de l'exécution de la fonction 
     if arret :
         return None
 
-    borne_inf = T*(-15)
-    borne_sup = T*15
+    if not independance and len(fonctions.data) >= 2:
+        variation_param_loi_norm()
+        
+    
+    loi_norm = random.gauss(esperance, variance)
+
     
     x_1 = pt[0] + T*10
-    y_1 = pt[1] + random.randint(borne_inf, borne_sup)
+    y_1 = pt[1] + loi_norm*(-10)
     
     # utilisation de la méthode create_line() appliquée à l'objet canevas :
     canevas.create_line(pt[0], pt[1], x_1, y_1, width = 3, fill = 'red')
@@ -229,13 +236,30 @@ def afficher_notifications() :
     if y < 500 :
         barre_notifs.after(4000, afficher_notifications)
 
+def variation_param_loi_norm():
+
+    global variance
+    global esperance
+
+    point1 = fonctions.data[len(fonctions.data) - 1]
+    point0 = fonctions.data[len(fonctions.data) - 2]
+
+    if point1[1] < point0[1]:
+        esperance = esperance - 0.5
+
+    else:
+        esperance = esperance + 0.5
+    print(esperance)
+
 
 def accueillir():
 
     global T
     global variance
-    global ecart_type
-
+    global esperance
+    global independance
+    independance = False
+    
     accueil = Tk()
     accueil.title("Accueil")
 
@@ -246,18 +270,18 @@ def accueillir():
 
     text0 = Label(text='Période')
     text1 = IntVar()
-    text1.set("Période entre 1 et 10")
+    text1.set("2")
     entr1 = Entry(accueil, text = text1)
 
 
     text2 = Label(text='Variance')
-    text3 = IntVar()
-    text3.set("gjef")
+    text3 = DoubleVar()
+    text3.set("1")
     entr2 = Entry(accueil, text = text3)
 
-    text4 = Label(text='Variance')
-    text5 = IntVar()
-    text5.set("gjef")
+    text4 = Label(text='Espérance')
+    text5 = DoubleVar()
+    text5.set("0")
     entr3 = Entry(accueil, text = text5)
 
     text0.grid(row = 2, column = 1, padx = espace, pady = espace)
@@ -273,7 +297,7 @@ def accueillir():
 
     T = text1.get()
     variance = text3.get()
-    ecart_type = text5.get()
+    esperance = text5.get()
 
 # ----- Procédure : -----
 
