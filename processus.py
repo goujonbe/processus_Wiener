@@ -40,60 +40,60 @@ def maj_periode(nouvelle_periode) :
     T = int(nouvelle_periode)
 
     
-def acheter() :
-    """création d'une nouvelle interface pour l'achat d'actions"""
-
-    fen1 = Tk()
-    fen1.title("Achat des actions")
-
-    explication = Label(fen1, text = "Nombre d'actions souhaitées : ")
-
-    actions = IntVar()
-
-    champ = Entry(fen1, textvariable = actions)
-    
-    bouton = Button(fen1, text = 'Valider', command = fen1.destroy)
-
-    # disposition de tous les widgets créés à l'aide de la méthode grid()
-    explication.grid(row = 1, column = 1, padx = 10, pady = 10)
-    champ.grid(row = 1, column = 2, padx = 10, pady = 10)
-    bouton.grid(row = 1, column = 3, padx = 10, pady = 10)
-        
-    fen1.mainloop()
-    
-
-def confirmer_achat() :
-    """fonction créant une petite interface graphique confirmant l'achat"""
-
-    showinfo("Confirmation de l'achat",
-             "Vous avez bien fait l'acquisition de vos actions")
-
-def vendre() :
-    """création d'une nouvelle interface pour la vente d'actions"""
-
-    fen2 = Tk()
-    fen2.title("Vente des actions")
-
-    explication = Label(fen2, text = "Nombre d'actions à mettre sur le marché")
-
-    actions = IntVar()
-
-    champ = Entry(fen2, textvariable = actions)
-    
-    bouton = Button(fen2, text = 'Valider', command = fen2.destroy)
-
-    # disposition de tous les widgets créés à l'aide de la méthode grid()
-    explication.grid(row = 1, column = 1, padx = 10, pady = 10)
-    champ.grid(row = 1, column = 2, padx = 10, pady = 10)
-    bouton.grid(row = 1, column = 3, padx = 10, pady = 10)
-    
-    fen2.mainloop()
-
-def confirmer_vente() :
-    """affichage d'un message confirmant la vente"""
-
-    showinfo("Confirmation de la vente",
-             "Les actions ont bien été mises en vente")
+##def acheter() :
+##    """création d'une nouvelle interface pour l'achat d'actions"""
+##
+##    fen1 = Tk()
+##    fen1.title("Achat des actions")
+##
+##    explication = Label(fen1, text = "Nombre d'actions souhaitées : ")
+##
+##    actions = IntVar()
+##
+##    champ = Entry(fen1, textvariable = actions)
+##    
+##    bouton = Button(fen1, text = 'Valider', command = fen1.destroy)
+##
+##    # disposition de tous les widgets créés à l'aide de la méthode grid()
+##    explication.grid(row = 1, column = 1, padx = 10, pady = 10)
+##    champ.grid(row = 1, column = 2, padx = 10, pady = 10)
+##    bouton.grid(row = 1, column = 3, padx = 10, pady = 10)
+##        
+##    fen1.mainloop()
+##    
+##
+##def confirmer_achat() :
+##    """fonction créant une petite interface graphique confirmant l'achat"""
+##
+##    showinfo("Confirmation de l'achat",
+##             "Vous avez bien fait l'acquisition de vos actions")
+##
+##def vendre() :
+##    """création d'une nouvelle interface pour la vente d'actions"""
+##
+##    fen2 = Tk()
+##    fen2.title("Vente des actions")
+##
+##    explication = Label(fen2, text = "Nombre d'actions à mettre sur le marché")
+##
+##    actions = IntVar()
+##
+##    champ = Entry(fen2, textvariable = actions)
+##    
+##    bouton = Button(fen2, text = 'Valider', command = fen2.destroy)
+##
+##    # disposition de tous les widgets créés à l'aide de la méthode grid()
+##    explication.grid(row = 1, column = 1, padx = 10, pady = 10)
+##    champ.grid(row = 1, column = 2, padx = 10, pady = 10)
+##    bouton.grid(row = 1, column = 3, padx = 10, pady = 10)
+##    
+##    fen2.mainloop()
+##
+##def confirmer_vente() :
+##    """affichage d'un message confirmant la vente"""
+##
+##    showinfo("Confirmation de la vente",
+##             "Les actions ont bien été mises en vente")
     
 
 def modifier_periode() :
@@ -249,7 +249,7 @@ def variation_param_loi_norm():
 
     else:
         esperance = esperance + 0.5
-    print(esperance)
+
 
 
 def accueillir():
@@ -259,20 +259,26 @@ def accueillir():
     global esperance
     global independance
     independance = False
+
+    espace = 10
     
     accueil = Tk()
     accueil.title("Accueil")
 
-    espace = 50
-
-    canevas = Canvas(width = 100, height = 50, bg = 'orange')
-    canevas.grid(row = 1, column = 1, columnspan = 2, padx = espace, pady = espace)
-
+    canevas = Canvas(width = 400, height = 100, bg = 'blue')
+    canevas.grid(row = 1, column = 1, columnspan = 2, padx = espace,\
+                 pady = espace)
+    canevas.create_text(200, 20, text="Le programme propose une\
+ simulation du processus de Wiener. ")
+    canevas.create_text(200, 60, text="Les paramètre de la simu\
+lation ci-dessous donnent un aperçu ")
+    canevas.create_text(155, 80, text="satisfaisant de simulati\
+on.                                ")
+    
     text0 = Label(text='Période')
     text1 = IntVar()
-    text1.set("2")
+    text1.set("1")
     entr1 = Entry(accueil, text = text1)
-
 
     text2 = Label(text='Variance')
     text3 = DoubleVar()
@@ -283,6 +289,12 @@ def accueillir():
     text5 = DoubleVar()
     text5.set("0")
     entr3 = Entry(accueil, text = text5)
+
+    bouton = Checkbutton(accueil, text="Indépendance des événements",\
+                         variable=independance)
+    
+    bouton.grid(row = 5, column = 1, padx = espace, pady = espace)
+    
 
     text0.grid(row = 2, column = 1, padx = espace, pady = espace)
     entr1.grid(row = 2, column = 2, padx = espace, pady = espace)
@@ -329,13 +341,13 @@ barre_notifs.grid(row = 2, column = 5, rowspan = 2, padx = 10, pady = 10)
 # initialisation d'objets de classe Button() :
 bouton1 = Button(fenetre, text = 'Démarrer', command = demarrer)
 bouton2 = Button(fenetre, text = 'Quitter', command = fenetre.destroy)
-bouton3 = Button(fenetre, text = 'Acheter des actions', command = acheter)
-bouton4 = Button(fenetre, text = 'Vendre des actions', command = vendre)
+##bouton3 = Button(fenetre, text = 'Acheter des actions', command = acheter)
+##bouton4 = Button(fenetre, text = 'Vendre des actions', command = vendre)
 # affichage :
 bouton1.grid(row = 3, column = 1, padx = 10, pady = 10)
 bouton2.grid(row = 3, column = 2, padx = 10, pady = 10)
-bouton3.grid(row = 3, column = 3, padx = 10, pady = 10)
-bouton4.grid(row = 3, column = 4, padx = 10, pady = 10)
+##bouton3.grid(row = 3, column = 3, padx = 10, pady = 10)
+##bouton4.grid(row = 3, column = 4, padx = 10, pady = 10)
 
 # Création d'un menu :
 barre_menu = Menu(fenetre)
